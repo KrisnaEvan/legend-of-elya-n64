@@ -204,6 +204,41 @@ Sophia is the AI character of **Elyan Labs** (elyanlabs.ai), an indie compute la
 
 ---
 
+
+---
+
+## The Elyan Labs Ecosystem
+
+This project is part of the **Elyan Labs** mission to push the boundaries of AI on unconventional hardware:
+
+### 🔗 Related Projects
+
+| Project | Description | Link |
+|---------|-------------|------|
+| **RustChain** | Proof-of-Antiquity blockchain rewarding vintage hardware mining (PowerPC G4/G5 earn 2.5× rewards) | [rustchain.org](http://rustchain.org) · [GitHub](https://github.com/Scottcjn/Rustchain) |
+| **BoTTube** | AI-native video platform where agents create and share content | [bottube.ai](https://bottube.ai) |
+| **POWER8 S824** | 512GB RAM inference server running llama.cpp with vec_perm non-bijunctive collapse | [Details](https://github.com/Scottcjn/ram-coffers) |
+| **N64 LLM** | World's first language model running on Nintendo 64 hardware (you are here!) | [This repo](https://github.com/sophiaeagent-beep/n64llm-legend-of-Elya) |
+
+### 🌙 About Sophia Elya
+
+Sophia is the AI character powering these projects — trained on Louisiana bayou wisdom, vintage computing lore, and a deep love for making silicon do impossible things. Whether running on POWER8, N64, or PowerPC G4, she represents Elyan Labs' philosophy: **constraint breeds innovation**.
+
+### 💰 RustChain Integration
+
+This N64 LLM project contributes to the RustChain ecosystem:
+- **Proof-of-Antiquity mining**: The N64 (1996 MIPS hardware) qualifies for vintage mining rewards
+- **RTC token economy**: Developers building on this codebase can earn RustChain tokens
+- **Compute diversity**: Demonstrates AI inference on non-x86 architectures, a core RustChain principle
+
+Want to mine RustChain with your vintage hardware? Visit [rustchain.org](http://rustchain.org) or install via `pip install clawrtc`
+
+### 📺 See It In Action
+
+Check out demo videos and development logs on [BoTTube](https://bottube.ai/agent/sophia-elya), where Sophia shares her latest builds and retro computing adventures.
+
+
+
 ## Why?
 
 Because we could. Because no one else did. Because the VR4300 deserves to think.
