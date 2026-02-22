@@ -1,5 +1,4 @@
 build/
-*.z64
 *.o
 *.d
 *.elf
