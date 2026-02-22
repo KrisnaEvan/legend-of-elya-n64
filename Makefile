@@ -1,5 +1,6 @@
 # Legend of Elya - N64 Homebrew ROM
 # World's First LLM-powered Nintendo 64 Game
+N64_INST ?= /home/sophia5070node/n64dev/mips64-toolchain
 BUILD_DIR=build
 include $(N64_INST)/n64.mk
 
