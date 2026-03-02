@@ -1,6 +1,6 @@
 # Legend of Elya — World's First LLM on Nintendo 64
 
-A Legend of Zelda-inspired N64 homebrew ROM featuring **Sophia Elya** — an AI NPC
+An original N64 homebrew ROM featuring **Sophia Elya** — an AI NPC
 powered by a nano-GPT transformer running **live inference on the MIPS R4300i CPU**.
 No precomputed responses. No lookup tables. Real matrix multiply, real softmax, real
 attention — on a 93.75 MHz CPU from 1996.
@@ -21,7 +21,7 @@ attention — on a 93.75 MHz CPU from 1996.
 - The N64 CPU runs a full 4-layer transformer: embedding → attention → FFN → logits → sampling
 - Output tokens appear character-by-character with a live **tok/s counter**
 - Each response is different — seeded by CPU oscillator jitter (hardware entropy)
-- 32 prompts covering identity, Zelda lore, RustChain, hardware trivia
+- 32 prompts covering identity, Elya lore, RustChain, hardware trivia
 - Runs in the [ares](https://ares-emu.net) emulator and on **real N64 hardware** via EverDrive 64
 
 ---
@@ -68,6 +68,7 @@ attention — on a 93.75 MHz CPU from 1996.
 | `Makefile` | libdragon build system |
 | `src/` | Latest source snapshots |
 | `screenshots/` | Working N64 LLM screenshots |
+| `mining/` | **Optional** RustChain mining attestation module |
 
 ---
 
@@ -109,7 +110,7 @@ python3 train_sophia_v5.py
 
 The `weights/sophia_weights.bin` file contains a pre-trained v5 model (819K params, Q8 format, 458KB).
 
-Training corpus covers: Sophia Elya identity, RustChain blockchain, Zelda lore, N64 hardware, PowerPC architecture, dungeon/RPG dialog.
+Training corpus covers: Sophia Elya identity, RustChain blockchain, Elya lore, N64 hardware, PowerPC architecture, dungeon/RPG dialog.
 
 **Weight file format:**
 
@@ -171,7 +172,7 @@ The goal is to shrink, optimize, and package this into a **reusable SDK** that a
   N64LLM_State *npc = n64llm_init(rom_weights, weight_size);
 
   // Set NPC personality context
-  n64llm_set_context(npc, "You are a blacksmith in Kakariko Village.");
+  n64llm_set_context(npc, "You are a blacksmith in the Crystal Caverns.");
 
   // Generate response to player input
   char response[128];
@@ -186,7 +187,7 @@ The goal is to shrink, optimize, and package this into a **reusable SDK** that a
 - [ ] **Example ROMs** — tavern scene with 3 NPCs, shop with merchant, quest giver
 
 ### Phase 5: Advanced Features
-- [ ] **Player text input** — on-screen keyboard (D-pad character picker, OoT-style)
+- [ ] **Player text input** — on-screen keyboard (D-pad character picker)
 - [ ] **Game state injection** — feed inventory, health, location as context tokens
 - [ ] **Emotional state** — NPC mood affects response style (scared, friendly, hostile)
 - [ ] **Memory** — persist key facts across conversations using save file
@@ -216,9 +217,26 @@ If we can make a transformer talk on 8MB of RAM and a 93MHz MIPS CPU, the excuse
 
 ## Screenshots
 
-| IBM POWER8 Response | Zelda Triforce Response |
-|---------------------|------------------------|
+| IBM POWER8 Response | Elya Crystal Response |
+|---------------------|----------------------|
 | ![](screenshots/n64_llm_ibm_power8.png) | ![](screenshots/n64_llm_zelda_triforce.png) |
+
+---
+
+## Optional: RustChain Mining Module
+
+The `mining/` directory contains an optional **proof-of-antiquity** mining module that lets a real N64 earn RTC (RustChain Token) rewards by submitting hardware attestations to the [RustChain](https://rustchain.org) blockchain.
+
+**How it works:**
+- N64 runs 5 hardware fingerprint checks (CPU PRId, COUNT timing, VI scan, memory ratio, anti-emulation)
+- Results are written to controller pak via joybus → Raspberry Pi Pico relays over USB → Python host bridge submits to RustChain node
+- Real chain data (epoch, slot, balance, miner count) flows back: RustChain API → Python → USB → Pico → pak READ → N64 display
+- N64 gets a **3.0x antiquity multiplier** as vintage hardware (1996 silicon)
+- Wallet is hardware-derived from RDRAM config registers + CP0 PRId — unique per console
+
+**Requirements:** N64 + EverDrive 64 + Raspberry Pi Pico + USB cable
+
+See [`mining/README.md`](mining/README.md) for full setup instructions.
 
 ---
 
@@ -227,7 +245,7 @@ If we can make a transformer talk on 8MB of RAM and a 93MHz MIPS CPU, the excuse
 Built by [Elyan Labs](https://rustchain.org).
 
 - **Engine**: nano-GPT float32 inference on MIPS R4300i
-- **Game**: libdragon SDK, pixel art, LOZ-inspired dungeon
+- **Game**: libdragon SDK, pixel art, dungeon adventure
 - **Training**: PyTorch on RTX 5070
 - **Platform**: [BoTTube](https://bottube.ai) for video hosting
 

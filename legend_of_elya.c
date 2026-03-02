@@ -5,7 +5,7 @@
  * FIXED: Single-buffer rendering - rdpq_detach_wait() + graphics_draw_text()
  * eliminates the console_render() double-buffer flicker.
  *
- * v2: Happy 40th Anniversary Zelda balloon screen + per-token tok/s indicator
+ * v2: Legend of Elya splash screen with balloons + per-token tok/s indicator
  * v3: LOZ Dungeon Theme square-wave music via libdragon audio
  */
 
@@ -21,7 +21,7 @@
 // ─── Game State ───────────────────────────────────────────────────────────────
 
 typedef enum {
-    STATE_ANNIVERSARY,   // Happy 40th Anniversary Zelda splash
+    STATE_ANNIVERSARY,   // Legend of Elya splash screen
     STATE_TITLE,
     STATE_DUNGEON,
     STATE_DIALOG,
@@ -101,13 +101,13 @@ static const char *CANNED[] = {
     "RustChain proves old silicon still matters.",
     "The VR4300 inside this cartridge is real.",
     "Seek the silver key behind the great statue.",
-    "Link faced Ganon here — you can too, hero.",
+    "Many adventurers have braved these halls.",
     "Elyan Labs built me to run on 8 megabytes.",
     "The RSP and RDP team up to draw these halls.",
     "PowerPC G4 earns two point five times RTC.",
     "Three attestation nodes guard the network.",
     "Ancient silicon dreams in proof of antiquity.",
-    "Forty years of Zelda — the legend lives on.",
+    "The legend of Elya endures in silicon.",
     "This dungeon holds secrets only brave find.",
     "I was trained on 50 thousand steps of lore.",
     "Press A near me anytime, weary traveler.",
@@ -149,61 +149,62 @@ static const char *PROMPTS[] = {
     "What is MIPS?: ",
     "How big is your model?: ",
     "What language runs you?: ",
-    /* Zelda lore */
-    "What year is Zelda?: ",
-    "Who is Link?: ",
-    "Who is Zelda?: ",
-    "Who is Ganon?: ",
+    /* Elya lore */
+    "What is Elyan Labs?: ",
+    "Who is the Helpmeet?: ",
+    "What is the Study?: ",
+    "Who guards the realm?: ",
     "What is the Triforce?: ",
     "Who is the Flameholder?: ",
-    "What is Kokiri Forest?: ",
+    "What is proof of work?: ",
 };
 #define N_PROMPTS 32
 
-// ─── Music: LOZ Overworld Theme ───────────────────────────────────────────────
-// Square-wave approximation of the famous 1986 Zelda Main Theme (Koji Kondo).
-// Key: D major. BPM ~125. Classic ascending D arpeggio, chromatic descent,
-// B5→Bb5→A5 suspension, resolution back to D5.
-// Notes: A4=440, D5=587, F#5=740, A5=880, B5=988, Bb5=932,
-//        Ab5/G#5=831, G5=784, F5=698, E5=659, C#5=554
+// ─── Music: Legend of Elya Theme (Original) ──────────────────────────────────
+// Original composition for Legend of Elya.
+// Key: A minor / C major modal. BPM ~110. Mysterious dungeon atmosphere
+// with a wistful, exploratory feel. Rising minor arpeggio opening,
+// chromatic tension, then resolution through the natural minor scale.
+// Notes: A4=440, C5=523, D5=587, E5=659, F5=698, G5=784, A5=880,
+//        B4=494, Bb4=466, G4=392, F4=349, E4=330
 // 0 = rest/silence
 
 #define MUSIC_FREQ         22050        // 22kHz, plenty for square wave
-#define MUSIC_BPM          125
-#define MUSIC_EIGHTH       (MUSIC_FREQ * 60 / (MUSIC_BPM * 2))   // ~5292 samples
+#define MUSIC_BPM          110
+#define MUSIC_EIGHTH       (MUSIC_FREQ * 60 / (MUSIC_BPM * 2))   // ~6013 samples
 #define MUSIC_ATTACK       350          // samples of fade-in per note
 #define MUSIC_DECAY_START  (MUSIC_EIGHTH - 450) // start fade-out near end
 
 static const uint16_t DUNGEON_FREQ[] = {
-    // Phrase 1: classic ascending D major arpeggio (the famous opening)
-    440,  587,  740,  880,   // A4 D5 F#5 A5  (the iconic rising arpeggio)
-    740,  880,  740,    0,   // F#5 A5 F#5 rest
-    // Phrase 2: climax — B5 then chromatic descent Bb5→A5
-    988,  932,  880,    0,   // B5 Bb5 A5 rest   (suspension + resolution)
-    831,  784,    0,  659,   // G#5 G5 rest E5
-    // Phrase 3: descending melody
-    698,  659,  587,    0,   // F5 E5 D5 rest
-    554,  587,  659,  740,   // C#5 D5 E5 F#5  (re-ascend)
-    // Phrase 4: triumphant resolution back to root
-    880,    0,  740,    0,   // A5 rest F#5 rest
-    587,  440,    0,    0,   // D5 A4 rest rest
+    // Phrase 1: mysterious ascending A minor arpeggio
+    330,  440,  523,  659,   // E4 A4 C5 E5  (Am arpeggio, wistful)
+    523,  659,  523,    0,   // C5 E5 C5 rest
+    // Phrase 2: tension — chromatic climb F5→G5, then descend
+    698,  784,  880,    0,   // F5 G5 A5 rest  (climax, high A)
+    784,  698,    0,  587,   // G5 F5 rest D5   (falling back)
+    // Phrase 3: melancholy descent through natural minor
+    659,  587,  523,    0,   // E5 D5 C5 rest  (stepwise descent)
+    494,  523,  587,  659,   // B4 C5 D5 E5   (re-ascend, hope)
+    // Phrase 4: resolution — settle into tonic with gentle fade
+    880,    0,  659,    0,   // A5 rest E5 rest  (octave call)
+    523,  440,    0,    0,   // C5 A4 rest rest  (home)
 };
 #define DUNGEON_LEN 32
 
 // Duration: 1=eighth note, 2=quarter note (held)
 static const uint8_t DUNGEON_DUR[] = {
     // Phrase 1
-    1, 1, 1, 1,   // A4 D5 F#5 A5 (quick ascending)
-    1, 2, 1, 1,   // F#5 A5(held) F#5 rest
+    1, 1, 1, 2,   // E4 A4 C5 E5(held)  (lingering on the 5th)
+    1, 2, 1, 1,   // C5 E5(held) C5 rest
     // Phrase 2
-    1, 1, 2, 1,   // B5 Bb5 A5(held) rest
-    1, 2, 1, 1,   // G#5 G5(held) rest E5
+    1, 1, 2, 1,   // F5 G5 A5(held) rest  (sustained climax)
+    1, 2, 1, 1,   // G5 F5(held) rest D5
     // Phrase 3
-    1, 1, 2, 1,   // F5 E5 D5(held) rest
-    1, 1, 1, 1,   // C#5 D5 E5 F#5
+    1, 1, 2, 1,   // E5 D5 C5(held) rest
+    1, 1, 1, 1,   // B4 C5 D5 E5  (quick run back up)
     // Phrase 4
-    2, 1, 2, 1,   // A5(held) rest F#5(held) rest
-    2, 2, 1, 1,   // D5(held) A4(held) rest rest
+    2, 1, 2, 1,   // A5(held) rest E5(held) rest
+    2, 2, 1, 1,   // C5(held) A4(held) rest rest
 };
 
 static void music_update(void) {
@@ -308,24 +309,24 @@ static void scene_anniversary(void) {
         fillrect(sx, sy, 1, 1, RGBA32(bright, bright, bright, 255));
     }
 
-    // Triforce symbol (golden, centered around x=152)
+    // Elya crystal gem (cyan/teal, centered around x=152)
     {
-        int tx = 144, ty = 28;
-        color_t gold = RGBA32(215, 175, 0, 255);
-        // Top triangle
-        for (int row = 0; row < 10; row++) {
+        int cx = 152, cy = 28;
+        color_t gem_bright = RGBA32(80, 220, 255, 255);
+        color_t gem_mid    = RGBA32(40, 160, 200, 255);
+        color_t gem_dark   = RGBA32(20, 100, 160, 255);
+        // Top facet — narrow peak widening to center
+        for (int row = 0; row < 12; row++) {
             int w = row * 2 + 2;
-            fillrect(tx + 10 - row, ty + row*2, w, 2, gold);
+            color_t c = (row < 4) ? gem_bright : gem_mid;
+            fillrect(cx - row, cy + row*2, w, 2, c);
         }
-        // Bottom-left triangle
-        for (int row = 0; row < 10; row++) {
-            int w = row * 2 + 2;
-            fillrect(tx - row, ty + 22 + row*2, w, 2, gold);
-        }
-        // Bottom-right triangle
-        for (int row = 0; row < 10; row++) {
-            int w = row * 2 + 2;
-            fillrect(tx + 20 + row, ty + 22 + row*2, w, 2, gold);
+        // Bottom facet — widest at center, narrowing to point
+        for (int row = 0; row < 14; row++) {
+            int w = 24 - row * 2;
+            if (w < 2) w = 2;
+            color_t c = (row > 10) ? gem_bright : gem_dark;
+            fillrect(cx - w/2, cy + 24 + row*2, w, 2, c);
         }
     }
 
@@ -398,7 +399,7 @@ static void scene_dungeon(void) {
     int bob = (int)(sinf(f * 0.08f) * 2.0f);
     int sx = 204, sy = 72 + bob;
 
-    // ── Shield (left arm, Hylian kite-style) ─────────────────────────────
+    // ── Shield (left arm, kite-style) ────────────────────────────────────
     {
         int shx = sx - 20, shy = sy + 6;
         // Kite-shaped body (wider in middle, narrows to point)
@@ -411,10 +412,10 @@ static void scene_dungeon(void) {
         fillrect(shx,   shy,      12,  2, RGBA32(215,175,  0, 255));
         fillrect(shx,   shy+2,     2, 20, RGBA32(215,175,  0, 255));
         fillrect(shx+10,shy+2,     2, 20, RGBA32(215,175,  0, 255));
-        // Mini Triforce emblem
-        fillrect(shx+4, shy+4,     3,  3, RGBA32(215,175,  0, 255)); // top
-        fillrect(shx+2, shy+7,     3,  3, RGBA32(215,175,  0, 255)); // bottom-left
-        fillrect(shx+6, shy+7,     3,  3, RGBA32(215,175,  0, 255)); // bottom-right
+        // Elya gem emblem (mini crystal)
+        fillrect(shx+5, shy+4,     2,  2, RGBA32(80,220,255, 255));  // top
+        fillrect(shx+3, shy+6,     6,  3, RGBA32(40,160,200, 255));  // middle
+        fillrect(shx+5, shy+9,     2,  2, RGBA32(80,220,255, 255));  // bottom
     }
 
     // ── Sophia body ───────────────────────────────────────────────────────
@@ -613,9 +614,9 @@ static void draw_text(surface_t *disp) {
     switch (G.state) {
 
     case STATE_ANNIVERSARY:
-        graphics_draw_text(disp,  52, 72,  "Happy 40th Anniversary!");
-        graphics_draw_text(disp,  80, 86,  "The Legend of Zelda");
-        graphics_draw_text(disp, 100, 100, "1986  ~  2026");
+        graphics_draw_text(disp,  64, 72,  "World's First N64 LLM");
+        graphics_draw_text(disp,  80, 86,  "Legend of Elya");
+        graphics_draw_text(disp,  80, 100, "Elyan Labs  2026");
         graphics_draw_text(disp,  96, 168, "from Elyan Labs");
         graphics_draw_text(disp,  68, 182, "World's First N64 LLM");
         if ((G.frame / 20) & 1)
