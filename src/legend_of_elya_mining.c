@@ -695,6 +695,8 @@ static void draw_text(surface_t *disp) {
             graphics_draw_text(disp, 20, 220, "[A] Next  [B] Close");
         break;
     }
+    case STATE_ATTEST:
+        break;  // attest_draw_text() handles this in main loop
     }
 }
 
