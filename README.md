@@ -1,5 +1,8 @@
 # Legend of Elya — World's First LLM on Nintendo 64
 
+[![BCOS Certified](https://img.shields.io/badge/BCOS-Certified-brightgreen?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik05IDE2LjE3TDQuODMgMTJsLTEuNDIgMS40MUw5IDE5IDIxIDdsLTEuNDEtMS40MXoiLz48L3N2Zz4=)](https://github.com/Scottcjn/Rustchain/blob/main/BCOS.md)
+
+
 An original N64 homebrew ROM featuring **Sophia Elya** — an AI NPC
 powered by a nano-GPT transformer running **live inference on the MIPS R4300i CPU**.
 No precomputed responses. No lookup tables. Real matrix multiply, real softmax, real
